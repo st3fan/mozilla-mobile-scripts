@@ -22,4 +22,11 @@ if __name__ == "__main__":
                         updated_body = updated_body.replace(f"sentry.prod.mozaws.net/operations/{old}/", f"sentry.prod.mozaws.net/operations/{new}/")
                     if issue.body != updated_body:
                         issue.edit(body=updated_body)
-                        print(f"Updated {issue.html_url}")
+                        print(f"Updated issue {issue.html_url}")
+            for comment in github.get_repo(f"mozilla-mobile/{project}").get_issues_comments():
+                if updated_body := comment.body:
+                    for old, new in PROJECTS.items():
+                        updated_body = updated_body.replace(f"sentry.prod.mozaws.net/operations/{old}/", f"sentry.prod.mozaws.net/operations/{new}/")
+                    if comment.body != updated_body:
+                        comment.edit(body=updated_body)
+                        print(f"Updated comment {comment.html_url}")
