@@ -5,12 +5,11 @@ import os, re
 from github import Github # https://github.com/PyGithub/PyGithub
 
 
-PATTERN = re.compile(r'VERSION = "([^"]*)"', re.MULTILINE)
-
-
 def parse_ac_version(src):
-    if match := PATTERN.search(src):
+    """Parse the Android-Components version out of the AndroidComponents.kt file."""
+    if match := re.compile(r'VERSION = "([^"]*)"', re.MULTILINE).search(src):
         return match[1]
+
 
 if __name__ == "__main__":
     repo = Github(os.getenv("GITHUB_ACCESS_TOKEN")).get_repo("mozilla-mobile/fenix")
